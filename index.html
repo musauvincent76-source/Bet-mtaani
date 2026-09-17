@@ -1,65 +1,159 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>MTAANI BET - Cheza na Ushinde Rongai</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BET MTAANI - Real Time Gaming</title>
 <style>
-body{margin:0;background:#0f172a;color:#fff;font-family:Arial}
-.header{background:#1e293b;padding:15px;display:flex;justify-content:space-between;align-items:center}
-.logo{font-weight:bold;color:#22c55e;font-size:20px}
-.btn{background:#22c55e;color:#000;padding:8px 15px;border-radius:20px;text-decoration:none;font-weight:bold}
-.match{background:#1e293b;margin:10px;padding:15px;border-radius:12px}
-.odds{display:flex;gap:10px;margin-top:10px}
-.odd{background:#334155;padding:10px 20px;border-radius:8px;flex:1;text-align:center;cursor:pointer}
-.odd:hover{background:#22c55e;color:#000}
-.betslip{position:fixed;bottom:0;left:0;right:0;background:#22c55e;color:#000;padding:15px;border-radius:20px 20px 0 0}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#0a0e1a;color:#fff}
+.top{background:#000;padding:12px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #00ff88;position:sticky;top:0;z-index:9}
+.logo{color:#00ff88;font-weight:900;font-size:20px}
+.live-dot{width:8px;height:8px;background:red;border-radius:50%;display:inline-block;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.tabs{display:flex;gap:8px;padding:10px;background:#111827;overflow:auto}
+.tabs button{background:#1f2937;color:#fff;border:none;padding:10px 16px;border-radius:20px}
+.tabs .active{background:#00ff88;color:#000;font-weight:900}
+.aviator{background:linear-gradient(180deg,#0f172a,#000);margin:10px;border-radius:15px;padding:15px;text-align:center;border:1px solid #00ff88;position:relative;overflow:hidden;height:240px}
+.plane{font-size:50px;position:absolute;left:20px;bottom:30px;transition:all 0.2s}
+.mult{font-size:60px;font-weight:900;color:#00ff88;margin-top:20px}
+.crashed{color:red!important}
+.card{background:#151a2a;margin:10px;padding:12px;border-radius:12px;border-left:3px solid #00ff88}
+.score{color:#00ff88;font-weight:900}
+.odds{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
+.odd{background:#0a0e1a;border:1px solid #333;padding:10px;border-radius:10px;text-align:center}
+.odd b{color:#00ff88;display:block;font-size:18px}
+.btn{width:100%;background:#00ff88;color:#000;padding:14px;border:none;border-radius:12px;font-weight:900;margin-top:10px;font-size:16px}
+.btn-red{background:red;color:#fff}
+.stake{display:flex;gap:8px;margin:10px 0}
+.stake input{flex:1;padding:12px;border-radius:10px;border:none;background:#0a0e1a;color:#fff;border:1px solid #333;text-align:center}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="logo">MTAANI BET</div>
-  <a class="btn" href="https://wa.me/254751768763?text=Nataka%20account%20ya%20betting">JOIN - 18+</a>
+<div class="top">
+<div class="logo">🎰 BET MTAANI</div>
+<div style="font-size:12px"><span class="live-dot"></span> REAL-TIME | <a href="admin.html" style="color:#00ff88">ADMIN</a></div>
+</div>
+
+<div class="tabs">
+<button class="active" onclick="tab('aviator')">✈️ Aviator</button>
+<button onclick="tab('live')">⚽ Live Now (3)</button>
+<button onclick="tab('crash')">💥 Crash 100x</button>
+</div>
+
+<!-- AVIATOR REAL TIME -->
+<div id="aviatorBox" class="aviator">
+<div style="color:#9ca3af;font-size:12px">✈️ AVIATOR - REAL TIME MULTIPLIER</div>
+<div id="mult" class="mult">1.00x</div>
+<div id="plane" class="plane">✈️</div>
+<div id="status" style="margin-top:80px;color:#00ff88;font-weight:bold">Inapaa... Weka BET!</div>
+<div class="stake">
+<input id="stake" type="number" value="50" placeholder="KES">
+<button class="btn" id="betBtn" onclick="placeBet()" style="flex:1;margin:0">BET KES 50</button>
+</div>
+<button class="btn btn-red" id="cashBtn" onclick="cashout()" style="display:none">CASHOUT</button>
+</div>
+
+<!-- LIVE MATCHES -->
+<div id="liveBox" style="display:none">
+<div class="card">
+<div style="display:flex;justify-content:space-between"><span>⚽ 78' LIVE</span><span class="score" id="score1">2 - 1</span></div>
+<div>Man City vs Arsenal</div>
+<div class="odds">
+<div class="odd"><span>1</span><b id="o1">1.95</b></div>
+<div class="odd"><span>X</span><b id="o2">2.10</b></div>
+<div class="odd"><span>2</span><b id="o3">3.40</b></div>
+</div>
+</div>
+<div class="card">
+<div style="display:flex;justify-content:space-between"><span>⚽ 62' LIVE</span><span class="score" id="score2">0 - 0</span></div>
+<div>Gor Mahia vs AFC Leopards</div>
+<div class="odds">
+<div class="odd"><span>1</span><b>2.30</b></div>
+<div class="odd"><span>X</span><b>1.80</b></div>
+<div class="odd"><span>2</span><b>2.90</b></div>
+</div>
+</div>
 </div>
 
 <div style="padding:15px">
-  <h3>⚽ Mechi za Leo</h3>
-  
-  <div class="match">
-    <div>Man City vs Arsenal - 19:30</div>
-    <div class="odds">
-      <div class="odd" onclick="addBet('Man City 2.10')">1 - 2.10</div>
-      <div class="odd" onclick="addBet('Draw 3.20')">X - 3.20</div>
-      <div class="odd" onclick="addBet('Arsenal 2.80')">2 - 2.80</div>
-    </div>
-  </div>
-
-  <div class="match">
-    <div>Gor Mahia vs AFC Leopards - 16:00</div>
-    <div class="odds">
-      <div class="odd" onclick="addBet('Gor 1.90')">1 - 1.90</div>
-      <div class="odd" onclick="addBet('Draw 2.90')">X - 2.90</div>
-      <div class="odd" onclick="addBet('AFC 3.40')">2 - 3.40</div>
-    </div>
-  </div>
-
-</div>
-
-<div class="betslip" id="slip">
-  Betslip (0) - Bonyeza odd uanze
+<button class="btn" onclick="window.open('https://wa.me/254751768763?text=Nimeweka%20BET%20BET-MTAANI%20KES%20'+document.getElementById('stake').value)">💰 LIPA NA M-PESA - 0751768763</button>
+<p style="text-align:center;color:#666;font-size:10px;margin-top:10px">18+ | Real Time Gaming | Bet Mtaani Best Gamblers</p>
 </div>
 
 <script>
-let bets = [];
-function addBet(team){
-  bets.push(team);
-  document.getElementById('slip').innerHTML = `Betslip (${bets.length}) - ${bets.join(', ')} <br><br> <a href='https://wa.me/254751768763?text=Nimebet%20${bets}' style='background:#000;color:#22c55e;padding:10px;border-radius:10px;text-decoration:none;display:block;text-align:center'>WEKA BET VIA WHATSAPP</a>`;
+let mult=1.00, flying=true, betActive=false, myStake=50, cashed=false;
+let planePos=20;
+let interval=setInterval(gameLoop,100);
+
+function gameLoop(){
+if(!flying) return;
+mult+=0.01 + Math.random()*0.05;
+planePos+=1.5;
+document.getElementById('mult').innerText=mult.toFixed(2)+'x';
+document.getElementById('plane').style.left=planePos+'px';
+document.getElementById('plane').style.bottom=(30+planePos*0.6)+'px';
+if(Math.random()<0.008 && mult>1.5){ crash(); }
+}
+
+function crash(){
+flying=false;
+document.getElementById('mult').classList.add('crashed');
+document.getElementById('status').innerText='💥 IMECRASH '+mult.toFixed(2)+'x!';
+document.getElementById('status').style.color='red';
+document.getElementById('plane').innerText='💥';
+setTimeout(resetGame,3000);
+if(betActive && !cashed){ document.getElementById('status').innerText+=' - UMECHOMEKA!'; betActive=false; }
+}
+
+function resetGame(){
+mult=1.00; planePos=20; flying=true;
+document.getElementById('mult').classList.remove('crashed');
+document.getElementById('mult').innerText='1.00x';
+document.getElementById('plane').style.left='20px';
+document.getElementById('plane').style.bottom='30px';
+document.getElementById('plane').innerText='✈️';
+document.getElementById('status').innerText='Inapaa... Weka BET!';
+document.getElementById('status').style.color='#00ff88';
+if(betActive) document.getElementById('cashBtn').style.display='block';
+}
+
+function placeBet(){
+myStake=document.getElementById('stake').value;
+betActive=true; cashed=false;
+document.getElementById('betBtn').style.display='none';
+document.getElementById('cashBtn').style.display='block';
+document.getElementById('cashBtn').innerText='CASHOUT KES '+(myStake*mult).toFixed(0);
+document.getElementById('status').innerText='BET ACTIVE KES '+myStake+' - Ngoja CASHOUT!';
+setInterval(()=>{
+if(betActive && !cashed) document.getElementById('cashBtn').innerText='CASHOUT KES '+(myStake*mult).toFixed(0);
+},100);
+}
+
+function cashout(){
+if(!betActive || cashed) return;
+cashed=true;
+let win=(myStake*mult).toFixed(0);
+alert('🔥 UMEWIN KES '+win+' kwa multiplier '+mult.toFixed(2)+'x! Tuma screenshot kwa WhatsApp 0751768763');
+betActive=false;
+document.getElementById('betBtn').style.display='block';
+document.getElementById('cashBtn').style.display='none';
+}
+
+// Live scores changing real time
+setInterval(()=>{
+let s1=document.getElementById('score1');
+if(s1) s1.innerText=Math.floor(Math.random()*3)+' - '+Math.floor(Math.random()*3);
+document.getElementById('o1').innerText=(1.5+Math.random()).toFixed(2);
+document.getElementById('o2').innerText=(2+Math.random()).toFixed(2);
+document.getElementById('o3').innerText=(2.5+Math.random()).toFixed(2);
+},2000);
+
+function tab(t){
+document.getElementById('aviatorBox').style.display=t=='aviator'?'block':'none';
+document.getElementById('liveBox').style.display=t=='live'?'block':'none';
 }
 </script>
-
-<div style="padding:20px;font-size:11px;color:#94a3b8;text-align:center">
-18+ | Cheza Kistaarabu | BCLB Licensed Required | MTAANI NETWORK
-</div>
-
 </body>
 </html>
